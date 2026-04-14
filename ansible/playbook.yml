@@ -1,0 +1,14 @@
+---
+- name: Deploy EpicBook Application
+  hosts: epicbook
+  become: true
+  vars:
+    mysql_fqdn: "{{ lookup('env', 'MYSQL_FQDN') }}"
+    mysql_user: "{{ lookup('env', 'MYSQL_USER') }}"
+    mysql_password: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
+    mysql_db: "{{ lookup('env', 'MYSQL_DB') }}"
+
+  roles:
+    - common
+    - app
+    - nginx

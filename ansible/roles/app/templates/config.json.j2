@@ -1,0 +1,28 @@
+{
+  "development": {
+    "username": "{{ mysql_user }}@epicbook-mysql-server",
+    "password": "{{ mysql_password }}",
+    "database": "{{ mysql_db }}",
+    "host": "{{ mysql_fqdn }}",
+    "dialect": "mysql",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  },
+  "production": {
+    "username": "{{ mysql_user }}@epicbook-mysql-server",
+    "password": "{{ mysql_password }}",
+    "database": "{{ mysql_db }}",
+    "host": "{{ mysql_fqdn }}",
+    "dialect": "mysql",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}

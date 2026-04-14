@@ -1,0 +1,56 @@
+---
+- name: Clone EpicBook repository
+  git:
+    repo: 'https://github.com/pravinmishraaws/theepicbook.git'
+    dest: /var/www/epicbook
+    force: yes
+
+- name: Install app dependencies
+  npm:
+    path: /var/www/epicbook
+    state: present
+
+- name: Update config.json with MySQL connection details
+  template:
+    src: config.json.j2
+    dest: /var/www/epicbook/config/config.json
+    mode: '0644'
+
+- name: Stop existing PM2 processes
+  shell: pm2 delete all || true
+  args:
+    executable: /bin/bash
+
+- name: Start EpicBook app with PM2
+  shell: |
+    cd /var/www/epicbook
+    pm2 start src/server.js --name epicbook --cwd /var/www/epicbook
+  args:
+    executable: /bin/bash
+
+- name: Wait for app to start and create tables
+  wait_for:
+    port: 3000
+    delay: 10
+    timeout: 60
+
+- name: Seed authors first (parent table)
+  shell: |
+    mysql -h {{ mysql_fqdn }} -u {{ mysql_user }}@epicbook-mysql-server \
+    -p{{ mysql_password }} --ssl-mode=REQUIRED \
+    {{ mysql_db }} < /var/www/epicbook/db/author_seed.sql
+  args:
+    executable: /bin/bash
+
+- name: Seed books second (child table)
+  shell: |
+    mysql -h {{ mysql_fqdn }} -u {{ mysql_user }}@epicbook-mysql-server \
+    -p{{ mysql_password }} --ssl-mode=REQUIRED \
+    {{ mysql_db }} < /var/www/epicbook/db/books_seed.sql
+  args:
+    executable: /bin/bash
+
+- name: Save PM2 process list
+  shell: pm2 save
+  args:
+    executable: /bin/bash

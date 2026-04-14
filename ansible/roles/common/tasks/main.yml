@@ -1,0 +1,38 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install required packages
+  apt:
+    name:
+      - nginx
+      - mysql-client
+      - git
+      - curl
+      - pm2
+    state: present
+
+- name: Install Node.js 18 repository
+  shell: |
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+  args:
+    executable: /bin/bash
+
+- name: Install Node.js 18
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+
+- name: Install PM2 globally
+  npm:
+    name: pm2
+    global: yes
+    state: present
+
+- name: Ensure Nginx is started and enabled
+  service:
+    name: nginx
+    state: started
+    enabled: yes

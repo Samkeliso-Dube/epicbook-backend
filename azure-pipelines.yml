@@ -1,0 +1,46 @@
+trigger:
+- main
+
+pool:
+  name: epicbook-pool
+
+variables:
+  MYSQL_FQDN: 'epicbook-mysql-server.mysql.database.azure.com'
+  MYSQL_USER: 'epicadmin'
+  MYSQL_DB: 'bookstore'
+
+stages:
+- stage: Deploy_EpicBook
+  displayName: 'Configure and Deploy EpicBook App'
+  jobs:
+  - job: AnsibleDeploy
+    displayName: 'Run Ansible Playbook'
+    steps:
+    - checkout: self
+
+    - script: |
+        sudo apt-get update -y
+        sudo apt-get install -y ansible
+        ansible --version
+      displayName: 'Install Ansible'
+
+    - task: DownloadSecureFile@1
+      displayName: 'Download SSH Private Key'
+      name: sshKey
+      inputs:
+        secureFile: 'epicbook-key'
+
+    - script: |
+        cp $(sshKey.secureFilePath) /tmp/epicbook-key
+        chmod 600 /tmp/epicbook-key
+      displayName: 'Set SSH Key Permissions'
+
+    - script: |
+        cd ansible
+        ansible-playbook -i inventory.ini playbook.yml
+      displayName: 'Run Ansible Playbook'
+      env:
+        MYSQL_FQDN: $(MYSQL_FQDN)
+        MYSQL_USER: $(MYSQL_USER)
+        MYSQL_PASSWORD: $(MYSQL_PASSWORD)
+        MYSQL_DB: $(MYSQL_DB)
