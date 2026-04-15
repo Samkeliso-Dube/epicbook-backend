@@ -36,7 +36,7 @@
 
 - name: Seed authors first (parent table)
   shell: |
-    mysql -h {{ mysql_fqdn }} -u {{ mysql_user }}@epicbook-mysql-server \
+    mysql -h {{ mysql_fqdn }} -u {{ mysql_user }} \
     -p{{ mysql_password }} --ssl-mode=REQUIRED \
     {{ mysql_db }} < /var/www/epicbook/db/author_seed.sql
   args:
@@ -44,7 +44,7 @@
 
 - name: Seed books second (child table)
   shell: |
-    mysql -h {{ mysql_fqdn }} -u {{ mysql_user }}@epicbook-mysql-server \
+    mysql -h {{ mysql_fqdn }} -u {{ mysql_user }} \
     -p{{ mysql_password }} --ssl-mode=REQUIRED \
     {{ mysql_db }} < /var/www/epicbook/db/books_seed.sql
   args:
