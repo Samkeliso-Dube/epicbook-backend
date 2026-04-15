@@ -24,7 +24,7 @@
 - name: Start EpicBook app with PM2
   shell: |
     cd /var/www/epicbook
-    pm2 start src/server.js --name epicbook --cwd /var/www/epicbook
+    pm2 start server.js --name epicbook --cwd /var/www/epicbook
   args:
     executable: /bin/bash
 
