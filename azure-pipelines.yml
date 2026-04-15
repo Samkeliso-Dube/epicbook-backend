@@ -37,7 +37,7 @@ stages:
 
     - script: |
         cd ansible
-        ansible-playbook -i inventory.ini playbook.yml
+        ansible-playbook -i inventory.ini playbook.yml -vvv
       displayName: 'Run Ansible Playbook'
       env:
         MYSQL_FQDN: $(MYSQL_FQDN)
