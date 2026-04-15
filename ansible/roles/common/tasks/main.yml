@@ -28,6 +28,7 @@
   shell: npm install -g pm2
   args:
     executable: /bin/bash
+  become: true
 
 - name: Ensure Nginx is started and enabled
   service:
