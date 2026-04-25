@@ -1,20 +1,23 @@
 {
   "development": {
-    "username": "root",
-    "password": "demo1234",
+    "username": "epicadmin",
+    "password": "EpicBook@2025!",
     "database": "bookstore",
-    "host": "127.0.0.1",
+    "host": "epicbook-mysql-server.mysql.database.azure.com",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "username": "epicadmin",
+    "password": "EpicBook@2025!",
+    "database": "bookstore",
+    "host": "epicbook-mysql-server.mysql.database.azure.com",
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable":"JAWSDB_URL",
+    "username": "epicadmin",
+    "password": "EpicBook@2025!",
+    "database": "bookstore",
+    "host": "epicbook-mysql-server.mysql.database.azure.com",
     "dialect": "mysql"
   }
 }
